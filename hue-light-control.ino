@@ -33,9 +33,11 @@ void loop() {
         do_light_update(light,HUE_LIGHT_CRM_2, 254);
         if (light) {
             digitalWrite(led1, HIGH);
+            Particle.publish("Computer Room On");
         }
         else {
             digitalWrite(led1, LOW);
+            Particle.publish("Computer Room Off");
         }
     }
     read_val = analogRead(A0);
