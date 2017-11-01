@@ -11,14 +11,32 @@ int read_val = 0;
 
 TCPClient client;
 
+int cm_light_on();
+int cm_light_off();
+
 void setup() {
     pinMode(led1, OUTPUT);
     pinMode(D0, OUTPUT);
     pinMode(A0, INPUT);
     Particle.variable("computer_room", light);
     Particle.variable("A_read", read_val);
-
+    Particle.function("Computer_Light_on", cm_light_on);
+    Particle.function("Computer_Light_off", cm_light_off);
     digitalWrite(D0,HIGH);
+}
+
+int cm_light_on() {
+  do_light_update(true, HUE_LIGHT_CRM_1, 254);
+  do_light_update(true, HUE_LIGHT_CRM_2, 254);
+  Particle.publish("Computer Room On");
+  return 1;
+}
+
+int cm_light_off() {
+  do_light_update(false, HUE_LIGHT_CRM_1, 254);
+  do_light_update(false, HUE_LIGHT_CRM_2, 254);
+  Particle.publish("Computer Room Off");
+  return 1;
 }
 
 void loop() {
