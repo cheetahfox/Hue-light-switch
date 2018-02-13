@@ -7,6 +7,7 @@
 
 int led1 = D7;
 bool light = FALSE;
+String status = "off";
 int read_val = 0;
 
 TCPClient client;
@@ -15,7 +16,7 @@ void setup() {
     pinMode(led1, OUTPUT);
     pinMode(D0, OUTPUT);
     pinMode(A0, INPUT);
-    Particle.variable("comp_room", light);
+    Particle.variable("light", status);
     Particle.variable("A_read", read_val);
 
     digitalWrite(D0,HIGH);
@@ -33,9 +34,11 @@ void loop() {
         do_light_update(light,HUE_LIGHT_CRM_2, 254);
         if (light) {
             digitalWrite(led1, HIGH);
+            status = "on ";
         }
         else {
             digitalWrite(led1, LOW);
+            status = "off";
         }
     }
     read_val = analogRead(A0);
