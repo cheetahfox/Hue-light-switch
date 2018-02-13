@@ -1,7 +1,7 @@
 // connection information for the Hue hub
-#define HUE_HUB_IP_ADDRESS_BYTES {192,168,77,50}
-#define HUE_HUB_IP_ADDRESS "192.168.77.50"
-#define HUE_DEVELOPER_NAME "newdeveloper"
+#define HUE_HUB_IP_ADDRESS_BYTES {192,168,77,20}
+#define HUE_HUB_IP_ADDRESS "192.168.77.20"
+#define HUE_DEVELOPER_NAME "cbagMiaHS5thhRGVCJDotjTzO2u6GoG9JIl2ZmL9"
 #define HUE_LIGHT_CRM_1 "5"
 #define HUE_LIGHT_CRM_2 "6"
 
@@ -15,7 +15,7 @@ void setup() {
     pinMode(led1, OUTPUT);
     pinMode(D0, OUTPUT);
     pinMode(A0, INPUT);
-    Particle.variable("computer_room", light);
+    Particle.variable("comp_room", light);
     Particle.variable("A_read", read_val);
 
     digitalWrite(D0,HIGH);
