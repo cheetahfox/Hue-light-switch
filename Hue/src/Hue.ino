@@ -33,6 +33,7 @@ void setup() {
   Particle.variable("A_read", read_val);
   Particle.publish("Setup finished", PUBLIC);
   digitalWrite(D0,HIGH);
+  Serial.begin(9600);
 }
 
 void loop() {
@@ -43,15 +44,16 @@ void loop() {
 
     if (state_crm != light) {
         light = state_crm;
+        Serial.println("before do-light");
         do_light_update(light,HUE_LIGHT_CRM_1);
         // do_light_update(light,HUE_LIGHT_CRM_2);
-        Particle.publish("After-Do-light", PUBLIC);
+        Serial.println("After do-light");
         if (light) {
             digitalWrite(led1, HIGH);
             status = "on ";
         }
         else {
-            digitalWrite(led1, LOW);
+            digitalWrite(led1, LOW); 
             status = "off";
         }
     }
@@ -61,7 +63,7 @@ void loop() {
 
 // do_light_update - On/Off, HUE light ID number
 void do_light_update(bool state, int light_id) { 
-    Particle.publish("do-light", "13", PUBLIC);
+    Serial.println("in do-light");
     char path[128]; 
     char body[64];
     
@@ -79,6 +81,7 @@ void do_light_update(bool state, int light_id) {
     request.path = path; 
     request.body = body;
     
-    http.put(request, response, headers); 
+    http.put(request, response, headers);
+    Serial.println("after http put"); 
     delay(1000);
 }
