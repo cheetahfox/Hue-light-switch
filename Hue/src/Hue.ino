@@ -2,8 +2,8 @@
 #define HUE_HUB_IP_ADDRESS "192.168.77.20"
 #define HUE_DEVELOPER_NAME "8BlbZ5TVDi3GsbcMJeA74BcIUlxNAlF5x2DmkHvO"
 
-int HUE_LIGHT_CRM_1 = 5;
-int HUE_LIGHT_CRM_2 = 6;
+int HUE_LIGHT_CRM_1 = 12;
+int HUE_LIGHT_CRM_2 = 13;
 
 #include "HttpClient.h"
 #include "application.h"
@@ -33,28 +33,28 @@ void setup() {
   Particle.variable("A_read", read_val);
   Particle.publish("Setup finished", PUBLIC);
   digitalWrite(D0,HIGH);
-  Serial.begin(9600);
+  //Serial.begin(9600);
 }
 
 void loop() {
     bool state_crm = FALSE;
-    if (analogRead(A0) > 80 ) {
+    if (analogRead(A0) > 60 ) {
         state_crm = TRUE;
     }
 
     if (state_crm != light) {
         light = state_crm;
-        Serial.println("before do-light");
         do_light_update(light,HUE_LIGHT_CRM_1);
-        // do_light_update(light,HUE_LIGHT_CRM_2);
-        Serial.println("After do-light");
+        do_light_update(light,HUE_LIGHT_CRM_2);
         if (light) {
             digitalWrite(led1, HIGH);
             status = "on ";
+            Particle.publish("Light", "1", PUBLIC);
         }
         else {
             digitalWrite(led1, LOW); 
             status = "off";
+            Particle.publish("Light", "0", PUBLIC);
         }
     }
     read_val = analogRead(A0);
@@ -64,8 +64,8 @@ void loop() {
 // do_light_update - On/Off, HUE light ID number
 void do_light_update(bool state, int light_id) { 
     Serial.println("in do-light");
-    char path[128]; 
-    char body[64];
+    char path[64]; 
+    char body[32];
     
     sprintf(path, "/api/%s/lights/%d/state", HUE_DEVELOPER_NAME, light_id);
     
@@ -82,6 +82,4 @@ void do_light_update(bool state, int light_id) {
     request.body = body;
     
     http.put(request, response, headers);
-    Serial.println("after http put"); 
-    delay(1000);
 }
